@@ -1,15 +1,15 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 
-entity r_reg is
+entity read_reg is
 port (
       read_en : in std_logic;
       read_data : out std_logic_vector(31 downto 0);
       reg_data : in std_logic_vector(31 downto 0)
      );
-end r_reg;
+end read_reg;
 
-architecture behavioral of r_reg is
+architecture behavioral of read_reg is
 
 begin
 
