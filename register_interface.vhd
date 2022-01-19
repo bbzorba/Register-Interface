@@ -4,42 +4,51 @@ use IEEE.numeric_std.all;
 
 entity register_interface is
 port (
-      write_en : in std_logic;
-      write_data : in std_logic_vector(31 downto 0);
-      read_en : in std_logic;
-      read_data : in std_logic_vector(31 downto 0);
-      reg_data : out std_logic_vector(31 downto 0);
       clk : in std_logic;
-      reset : in std_logic
+      reset : in std_logic;
+      
+      reg0_write_en : in std_logic;
+      reg0_write_data : in std_logic_vector(31 downto 0);
+      
+      reg1_read_en : in std_logic;
+      reg1_read_data : in std_logic_vector(31 downto 0);
+      
+      reg2_write_en : in std_logic;
+      reg2_write_data : in std_logic_vector(31 downto 0);
+      reg2_read_en : in std_logic;
+      reg2_read_data : in std_logic_vector(31 downto 0);
+      
      );
 end register_interface;
 
-architecture behavioral of read_write_reg is
+architecture behavioral of register_interface is
   
-signal register_data : std_logic_vector(31 downto 0);
+signal reg0_reg_data, reg1_reg_data, reg2_reg_data : std_logic_vector(31 downto 0);
 
 begin
 
-read_data <= register_data when read_en = '1' else (others => '0');
-reg_data <= register_data;
+reg0: entity work.write_reg port map(
+                                     write_en => reg0_write_en,
+                                     write_data => reg0_write_data,
+                                     reg_data => reg0_reg_data,
+                                     reset => reset,
+                                     clk => clk
+                                    );
 
-process(clk)
-begin
-  
-  if rising_edge(clk) then
-    
-    if reset = '1' then
-      register_data <= (others => '0');
-    
-    else
-      if write_en = '1' then
-        register_data <= write_data;
-      end if;
-        
-    end if;
+reg1: entity work.read_reg port map(
+                                     read_en => reg1_read_en,
+                                     read_data => reg1_read_data,
+                                     reg_data => reg1_reg_data,
+                                    );
       
-  end if;
-    
-end process;
-  
+reg2: entity work.read_write_reg port map(
+                                     write_en => reg2_write_en,
+                                     write_data => reg2_write_data,
+                                     read_en => reg2_read_en,
+                                     read_data => reg2_read_data,
+                                     reg_data => reg2_reg_data,
+                                     reset => reset,
+                                     clk => clk
+                                    );
+      
 end behavioral;
