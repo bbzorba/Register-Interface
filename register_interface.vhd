@@ -16,7 +16,7 @@ port (
       reg2_write_en : in std_logic;
       reg2_write_data : in std_logic_vector(31 downto 0);
       reg2_read_en : in std_logic;
-      reg2_read_data : in std_logic_vector(31 downto 0);
+      reg2_read_data : in std_logic_vector(31 downto 0)
       
      );
 end register_interface;
@@ -38,7 +38,7 @@ reg0: entity work.write_reg port map(
 reg1: entity work.read_reg port map(
                                      read_en => reg1_read_en,
                                      read_data => reg1_read_data,
-                                     reg_data => reg1_reg_data,
+                                     reg_data => reg1_reg_data
                                     );
       
 reg2: entity work.read_write_reg port map(
